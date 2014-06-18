@@ -1,0 +1,56 @@
+#!/usr/bin/env ruby
+
+$LOAD_PATH.unshift File.join(File.dirname(__FILE__), *%w[.. lib])
+
+require 'rubygems'
+require 'rake'
+require 'bundler/setup'
+require 'getoptlong'
+
+raketask =  'spec'
+
+opts = GetoptLong.new(
+  ["--scenario",     "-s", GetoptLong::REQUIRED_ARGUMENT],
+  ["--specpath",     "-p", GetoptLong::REQUIRED_ARGUMENT],
+  ["--ssh_options",  "-o", GetoptLong::REQUIRED_ARGUMENT],
+  ["--result_csv",   "-c", GetoptLong::REQUIRED_ARGUMENT],
+  ["--explain",      "-e", GetoptLong::REQUIRED_ARGUMENT],
+  ["--tableformat",  "-t", GetoptLong::REQUIRED_ARGUMENT],
+  ["--help",         "-h", GetoptLong::NO_ARGUMENT],
+  ["--tmpdir",       "-1", GetoptLong::REQUIRED_ARGUMENT],
+  ["--task",         "-2", GetoptLong::REQUIRED_ARGUMENT]
+)
+
+opts.each do |opt, arg|
+  case opt
+  when '--scenario'
+    ENV['scenario'] = arg
+  when '--specpath'
+    ENV['specpath'] = arg
+  when '--ssh_options'
+    ENV['ssh_options'] = arg
+  when '--result_csv'
+    ENV['result_csv'] = arg
+  when '--explain'
+    ENV['explain'] = arg
+  when '--tableformat'
+    ENV['tableformat'] = arg
+  when '--tmpdir'
+    ENV['tmpdir'] = arg
+  when '--task'
+    raketask += ":" + arg
+  else
+    puts "Usage: serverspec-runner (options)"
+    puts "-s, --scenario     SCENARIO_FILE       path to scenario yml file"
+    puts "-p, --specpath     SPEC_PATH           path to spec tests dir"
+    puts "-o, --ssh_options  SSH_OPTIONS_FILE    path to ssh options yml file"
+    puts "-c, --result_csv   RESULT_CSV_FILE     path to result csv file"
+    puts "-e, --explain      (short|long)        specify result explain length"
+    puts "-t, --tableformat  (aa|mkd)            specify result table type"
+    puts "-h, --help                             show help"
+    exit 0
+  end
+end
+
+load "#{File.dirname(__FILE__)}/../Rakefile"
+Rake::Task[raketask.to_sym].invoke
