@@ -1,0 +1,25 @@
+#
+# role_1:
+#   role_detail_1:
+#     - ssh-access-host-or-symbol
+#     - :
+#   role_detail_2:
+#     - :
+#   :
+# role_2:
+# :
+# ---
+# ssh-access-host-or-symbol:
+#   ip: xxx.xxx.xxx.xxx
+#
+
+#release:
+#  repl_percona:
+#    - xxx.xxx.xxx.xxx
+#example:
+#  - localhost
+#  - anyhost-01
+#---
+#anyhost-01
+#  host:        xxx.xxx.xxx.xxx
+#  repl_master: xxx.xxx.xxx.xxx
