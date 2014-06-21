@@ -12,8 +12,11 @@ task :spec => 'spec:all'
 namespace :spec do
 
   ENV['EXEC_PATH'] = '/usr/local/bin:/usr/sbin:/sbin:/usr/bin:/bin'
-  ENV['specpath'] = "#{File.dirname(__FILE__)}/spec" unless ENV['specpath']
-  ENV['ssh_options'] = "#{File.dirname(__FILE__)}/ssh_options.yml" unless ENV['ssh_options']
+
+  ENV['specroot'] = File.dirname(__FILE__) unless ENV['specroot']
+  ENV['specpath'] = "#{ENV['specroot']}/spec"
+
+  ENV['ssh_options'] = "#{Dir.pwd}/ssh_options.yml" unless ENV['ssh_options']
   ssh_options = YAML.load_file(ENV['ssh_options'])
   ENV['result_csv'] = './_serverspec_result.csv' unless ENV['result_csv']
   csv_file = ENV['result_csv']
@@ -33,7 +36,7 @@ namespace :spec do
   scenarios = nil
   platform = {}
 
-  if ENV['scenario'] =~ /^http:\/\//
+  if ENV['scenario'] =~ /^(http|https):\/\//
     open(ENV['scenario_tmp'], 'w') do |f|
       open(ENV['scenario']) do |data|
         f.write(data.read)
@@ -43,7 +46,7 @@ namespace :spec do
     ENV['scenario'] = ENV['scenario_tmp']
   end
 
-  File.open(ENV['scenario'] || "#{File.dirname(__FILE__)}/scenario.yml") do |f|
+  File.open(ENV['scenario'] || "#{Dir.pwd}/scenario.yml") do |f|
     YAML.load_documents(f).each_with_index do |data, idx|
       if idx == 0
         scenarios = data
