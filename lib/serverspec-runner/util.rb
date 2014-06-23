@@ -8,7 +8,7 @@ module ServerspecRunner
 
       result = {}
 
-      if host == 'localhost' || host == nil
+      if host == 'localhost' || '127.0.0.1' || host == nil
         commands.each do |key,cmd|
           result[key] = { :stdout => `#{cmd}`.strip, :exit_status => $?, :exit_succeeded => ($? == 0) }
         end
