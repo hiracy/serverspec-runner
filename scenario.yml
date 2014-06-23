@@ -13,13 +13,8 @@
 #   ip: xxx.xxx.xxx.xxx
 #
 
-#release:
-#  repl_percona:
-#    - xxx.xxx.xxx.xxx
-#example:
-#  - localhost
-#  - anyhost-01
-#---
-#anyhost-01
-#  host:        xxx.xxx.xxx.xxx
-#  repl_master: xxx.xxx.xxx.xxx
+example:
+  - anyhost-01
+---
+anyhost-01:
+  host:        127.0.0.1
