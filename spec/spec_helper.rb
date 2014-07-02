@@ -8,7 +8,7 @@ require 'serverspec-runner/util/hash'
 include Serverspec::Helper::DetectOS
 
 ssh_options = YAML.load_file(ENV['ssh_options'])
-csv_path = ENV['result_file']
+csv_path = ENV['result_csv']
 explains = []
 results = []
 
