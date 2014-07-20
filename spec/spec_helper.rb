@@ -58,7 +58,7 @@ RSpec.configure do |c|
 
   c.after(:each) do
     if ENV['explain'] == 'long'
-      explains << "  " + self.example.metadata[:full_description] + RSpec::Matchers.generated_description
+      explains << "  " + self.example.metadata[:full_description] + (RSpec::Matchers.generated_description || '')
     else
 
       second_depth = self.example.metadata.depth - 3
