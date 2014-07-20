@@ -81,7 +81,7 @@ namespace :spec do
           platform[host_alias.to_sym] = {}
           ssh_host = host_alias
         end
-        tasks << "#{role}-#{host_alias}"
+        tasks << "#{role}::#{host_alias}"
         platform[host_alias.to_sym] = ServerspecRunner::Detection.platform(ssh_host, ssh_options, platform[host_alias.to_sym])
       end
     elsif scenarios[role].kind_of?(Hash)
@@ -95,7 +95,7 @@ namespace :spec do
             platform[host_alias.to_sym] = {}
             ssh_host = host_alias
           end
-          tasks << "#{role}-#{role_sub}-#{host_alias}"
+          tasks << "#{role}::#{role_sub}::#{host_alias}"
           platform[host_alias.to_sym] = ServerspecRunner::Detection.platform(ssh_host, ssh_options, platform[host_alias.to_sym])
         end
       end
