@@ -17,11 +17,15 @@ RSpec.configure do |c|
   c.path = ENV['EXEC_PATH']
 
   run_path = c.files_to_run[0].split('/')
-  if run_path[run_path.length - 3] == 'spec'
-    role_name = run_path[run_path.length - 2]
-  else
-    role_name = run_path[run_path.length - 3] + "-" + run_path[run_path.length - 2]
+
+  speck_i = 0
+  run_path.reverse.each_with_index do |r,i|
+    if r == 'spec'
+      speck_i = ((run_path.size - 1) - i)
+    end
   end
+  sliced = run_path.slice((speck_i + 1)..(run_path.size - 2))
+  role_name = sliced.join('-')
 
   if ENV['ASK_SUDO_PASSWORD']
     require 'highline/import'
