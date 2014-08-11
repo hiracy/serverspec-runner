@@ -37,7 +37,7 @@ namespace :spec do
     end
 
     FileUtils.mkdir_p(path)
-    FileUtils.cp_r("#{File.dirname(__FILE__)}/spec_tmp/.", path)
+    FileUtils.cp_r("#{File.dirname(__FILE__)}/spec/.", path)
 
     puts("created to \"#{ENV['specpath']}\" !!")
   end
