@@ -46,7 +46,7 @@ opts.each do |opt, arg|
     puts "-o, --ssh_options  SSH_OPTIONS_FILE     path to ssh options yml file"
     puts "-c, --result_csv   RESULT_CSV_FILE      path to result csv file"
     puts "-e, --explain      (short|long)         specify result explain length(default: long)"
-    puts "-t, --tableformat  (aa|mkd)             specify result table type(default: aa)"
+    puts "-t, --tableformat  (aa|mkd|csv|bool)  specify result table type(default: aa)"
     puts "-h, --help                              show help"
     exit 0
   end

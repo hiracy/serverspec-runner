@@ -170,7 +170,7 @@ namespace :spec do
   tasks = []
   gen_exec_plan(nil, scenarios, '', ssh_options, tasks, platform)
 
-  task :csv_output do
+  task :stdout do
     maxlen = 0
     CSV.foreach(csv_file) do |r|
       n =  r[0].each_char.map{|c| c.bytesize == 1 ? 1 : 2}.reduce(0, &:+)
@@ -179,29 +179,36 @@ namespace :spec do
 
     pad_spaces = 4
 
+    spacer = nil
     if ENV['tableformat'] == 'mkd'
       spacer = "|:" + ("-" * maxlen) + "|:" + ("-" * "result".length) + ":|"
-    else
+    elsif ENV['tableformat'] == 'aa'
       spacer = "+" + ("-" * (maxlen + "result".length + pad_spaces)) + "+"
     end
 
-    puts spacer unless ENV['tableformat'] == 'mkd'
-    is_header = true
-    CSV.foreach(csv_file) do |r|
-      n =  r[0].each_char.map{|c| c.bytesize == 1 ? 1 : 2}.reduce(0, &:+)
-      pad_mid = (" " * (maxlen - n)) + " | "
-      pad_tail = (" " * ("result".length - r[1].length)) + " |"
-      puts "|#{r[0]}#{pad_mid}#{r[1]}#{pad_tail}"
-
-      if is_header
-        puts spacer
-        is_header = false
+    if ENV['tableformat'] == 'csv'
+      CSV.foreach(csv_file) do |r|
+        puts "#{r[0].strip}#{r[1].empty? ? '': ','}#{r[1]}"
       end
+    else
+      puts spacer unless ENV['tableformat'] == 'mkd'
+      is_header = true
+      CSV.foreach(csv_file) do |r|
+        n =  r[0].each_char.map{|c| c.bytesize == 1 ? 1 : 2}.reduce(0, &:+)
+        pad_mid = (" " * (maxlen - n)) + " | "
+        pad_tail = (" " * ("result".length - r[1].length)) + " |"
+        puts "|#{r[0]}#{pad_mid}#{r[1]}#{pad_tail}"
+  
+        if is_header
+          puts spacer
+          is_header = false
+        end
+      end
+      puts spacer unless ENV['tableformat'] == 'mkd'
     end
-    puts spacer unless ENV['tableformat'] == 'mkd'
   end
 
-  tasks << :csv_output
+  tasks << :stdout
   task :all => tasks
 
   # tempファイルに書き出し
