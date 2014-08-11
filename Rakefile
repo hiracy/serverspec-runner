@@ -2,6 +2,7 @@ require 'rake'
 require 'rspec/core/rake_task'
 require 'yaml'
 require 'csv'
+require 'fileutils'
 require 'net/ssh'
 require 'open-uri'
 require 'serverspec-runner'
@@ -13,7 +14,7 @@ namespace :spec do
 
   ENV['EXEC_PATH'] = '/usr/local/bin:/usr/sbin:/sbin:/usr/bin:/bin'
 
-  ENV['specroot'] = File.dirname(__FILE__) unless ENV['specroot']
+  ENV['specroot'] = "." unless ENV['specroot']
   ENV['specpath'] = "#{ENV['specroot']}/spec"
 
   ENV['ssh_options'] = "#{ENV['specroot']}/ssh_options.yml" unless ENV['ssh_options']
@@ -24,6 +25,22 @@ namespace :spec do
   ENV['explain'] = "long" unless ENV['explain']
   ENV['tableformat'] = "aa" unless ENV['tableformat']
   ENV['scenario'] = "./scenario.yml" unless ENV['scenario']
+
+  def init_specpath(path)
+
+    begin
+      print "create spec tree to #{ENV['specpath']}?(y/n): "
+      ans = STDIN.gets.strip
+      exit 0 unless (ans == 'y' || ans == 'yes')
+    rescue Exception
+      exit 0
+    end
+
+    FileUtils.mkdir_p(path)
+    FileUtils.cp_r("#{File.dirname(__FILE__)}/spec_tmp/.", path)
+
+    puts("created to \"#{ENV['specpath']}\" !!")
+  end
 
   def gen_exec_plan(parent, node, path, ssh_options, tasks, platform)
 
@@ -99,6 +116,11 @@ namespace :spec do
     end
 
     return real_path
+  end
+
+  if !Dir.exists?(ENV['specpath'])
+    init_specpath(ENV['specpath'])
+    exit 0
   end
 
   if !ENV['tmpdir']
