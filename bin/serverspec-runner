@@ -41,13 +41,13 @@ opts.each do |opt, arg|
     raketask += "::" + arg
   else
     puts "Usage: serverspec-runner (options)"
-    puts "-s, --scenario     SCENARIO_FILE       path to scenario yml file"
-    puts "-r, --specroot     SPEC_ROOT           path to spec tests root dir"
-    puts "-o, --ssh_options  SSH_OPTIONS_FILE    path to ssh options yml file"
-    puts "-c, --result_csv   RESULT_CSV_FILE     path to result csv file"
-    puts "-e, --explain      (short|long)        specify result explain length"
-    puts "-t, --tableformat  (aa|mkd)            specify result table type"
-    puts "-h, --help                             show help"
+    puts "-s, --scenario     SCENARIO_FILE        path to scenario yml file"
+    puts "-r, --specroot     SPEC_ROOT            path to spec tests root dir"
+    puts "-o, --ssh_options  SSH_OPTIONS_FILE     path to ssh options yml file"
+    puts "-c, --result_csv   RESULT_CSV_FILE      path to result csv file"
+    puts "-e, --explain      (short|long)         specify result explain length(default: long)"
+    puts "-t, --tableformat  (aa|mkd)             specify result table type(default: aa)"
+    puts "-h, --help                              show help"
     exit 0
   end
 end
