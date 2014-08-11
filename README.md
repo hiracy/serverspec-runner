@@ -15,7 +15,7 @@ Simple execution framework for [serverspec](http://serverspec.org/).
 
 initialize spec direcotries and create skeleton-specfiles.
 
-    $ serverspec-runner -r /path/to/your_serverspec_root -i test_name/test_detail_name
+    $ serverspec-runner -r /path/to/your_serverspec_root
 
 Edit your [spec-files](http://serverspec.org/resource_types.html).
 
@@ -42,9 +42,9 @@ do tests.
 
     $ serverspec-runner -r /path/to/your_serverspec_root -s /path/to/your_scenario.yml
 
-You can also specify "ssh_options.yml" file by "-o" option
+You can also specify [ssh_options.yml](http://net-ssh.github.io/ssh/v2/api/classes/Net/SSH/Config.html)(Net::SSH options) file by "-o" option.
 
-    $ serverspec-runner -r /path/to/your_serverspec_root -s /path/to/your_scenario.yml -o /path/to/your_ssh_options.yml
+    $ serverspec-runner -s /path/to/your_scenario.yml -o /path/to/your_ssh_options.yml
 
 <!-- See details to [here](http://serverspec.org/) -->
 
