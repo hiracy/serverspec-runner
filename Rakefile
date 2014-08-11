@@ -171,26 +171,35 @@ namespace :spec do
   gen_exec_plan(nil, scenarios, '', ssh_options, tasks, platform)
 
   task :stdout do
-    maxlen = 0
-    CSV.foreach(csv_file) do |r|
-      n =  r[0].each_char.map{|c| c.bytesize == 1 ? 1 : 2}.reduce(0, &:+)
-      maxlen = n if n > maxlen
-    end
 
-    pad_spaces = 4
+    if ENV['tableformat'] == 'bool'
 
-    spacer = nil
-    if ENV['tableformat'] == 'mkd'
-      spacer = "|:" + ("-" * maxlen) + "|:" + ("-" * "result".length) + ":|"
-    elsif ENV['tableformat'] == 'aa'
-      spacer = "+" + ("-" * (maxlen + "result".length + pad_spaces)) + "+"
-    end
+      ret = 'ok'
+      CSV.foreach(csv_file) do |r|
+        ret = 'ng' if r[1] == 'NG'
+      end
 
-    if ENV['tableformat'] == 'csv'
+      puts ret
+    elsif ENV['tableformat'] == 'csv'
       CSV.foreach(csv_file) do |r|
         puts "#{r[0].strip}#{r[1].empty? ? '': ','}#{r[1]}"
       end
     else
+      maxlen = 0
+      CSV.foreach(csv_file) do |r|
+        n =  r[0].each_char.map{|c| c.bytesize == 1 ? 1 : 2}.reduce(0, &:+)
+        maxlen = n if n > maxlen
+      end
+  
+      pad_spaces = 4
+  
+      spacer = nil
+      if ENV['tableformat'] == 'mkd'
+        spacer = "|:" + ("-" * maxlen) + "|:" + ("-" * "result".length) + ":|"
+      elsif ENV['tableformat'] == 'aa'
+        spacer = "+" + ("-" * (maxlen + "result".length + pad_spaces)) + "+"
+      end
+
       puts spacer unless ENV['tableformat'] == 'mkd'
       is_header = true
       CSV.foreach(csv_file) do |r|
