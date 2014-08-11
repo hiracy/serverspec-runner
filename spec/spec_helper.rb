@@ -7,7 +7,7 @@ require 'serverspec-runner/util/hash'
 
 include Serverspec::Helper::DetectOS
 
-ssh_options = YAML.load_file(ENV['ssh_options'])
+ssh_opts_default = YAML.load_file(ENV['ssh_options'])
 csv_path = ENV['result_csv']
 explains = []
 results = []
@@ -44,9 +44,11 @@ RSpec.configure do |c|
 
     c.host = ENV['TARGET_SSH_HOST']
     options = Net::SSH::Config.for(c.host, files=["~/.ssh/config"])
-    user    = options[:user] || ssh_options[:user] || Etc.getlogin
 
-    c.ssh   = Net::SSH.start(c.host, user, options.merge(ssh_options))
+    ssh_opts = YAML.load_file(property[:ssh_opts]) if File.exists?(property[:ssh_opts])
+    ssh_opts ||= ssh_opts_default
+    user    = options[:user] || ssh_opts[:user] || Etc.getlogin
+    c.ssh   = Net::SSH.start(c.host, user, options.merge(ssh_opts))
     c.os    = backend.check_os
   end
 
