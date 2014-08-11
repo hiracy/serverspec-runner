@@ -14,17 +14,17 @@ namespace :spec do
 
   ENV['EXEC_PATH'] = '/usr/local/bin:/usr/sbin:/sbin:/usr/bin:/bin'
 
-  ENV['specroot'] = "." unless ENV['specroot']
+  ENV['specroot'] = ENV['specroot'] || "."
   ENV['specpath'] = "#{ENV['specroot']}/spec"
 
-  ENV['ssh_options'] = "#{ENV['specroot']}/ssh_options.yml" unless ENV['ssh_options']
+  ENV['ssh_options'] = ENV['ssh_options'] || "#{ENV['specroot']}/ssh_options.yml"
   ssh_options = YAML.load_file(ENV['ssh_options'])
-  ENV['result_csv'] = './_serverspec_result.csv' unless ENV['result_csv']
+  ENV['result_csv'] = ENV['result_csv'] || './_serverspec_result.csv'
   csv_file = ENV['result_csv']
   CSV.open(csv_file, 'w') { |w| w << ['description', 'result'] }
-  ENV['explain'] = "long" unless ENV['explain']
-  ENV['tableformat'] = "aa" unless ENV['tableformat']
-  ENV['scenario'] = "./scenario.yml" unless ENV['scenario']
+  ENV['explain'] = ENV['explain'] || "long"
+  ENV['tableformat'] = ENV['tableformat'] || "aa"
+  ENV['scenario'] = ENV['scenario'] || "./scenario.yml"
 
   def init_specpath(path)
 
