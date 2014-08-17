@@ -38,9 +38,10 @@ namespace :spec do
     end
 
     FileUtils.mkdir_p(path)
+    FileUtils.cp("#{File.dirname(__FILE__)}/scenario.yml", File.dirname(path))
     FileUtils.cp_r("#{File.dirname(__FILE__)}/spec/.", path)
 
-    puts("created to \"#{ENV['specpath']}\" !!")
+    puts("Please edit \"#{ENV['specpath']}/scenario.yml\" and run !!")
   end
 
   def gen_exec_plan(parent, node, path, ssh_options, tasks, platform)
