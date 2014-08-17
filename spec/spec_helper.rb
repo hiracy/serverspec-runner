@@ -14,6 +14,7 @@ results = []
 
 RSpec.configure do |c|
 
+  c.expose_current_running_example_as :example
   c.path = ENV['EXEC_PATH']
 
   run_path = c.files_to_run[0].split('/')
@@ -64,7 +65,7 @@ RSpec.configure do |c|
 
   c.after(:each) do
     if ENV['explain'] == 'long'
-      explains << "  " + self.example.metadata[:full_description] + (RSpec::Matchers.generated_description || '')
+      explains << "  " + example.metadata[:full_description] + (RSpec::Matchers.generated_description || '')
     else
 
       second_depth = self.example.metadata.depth - 3
