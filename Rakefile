@@ -30,7 +30,7 @@ namespace :spec do
   def init_specpath(path)
 
     begin
-      print "want to create spec-tree to #{ENV['specpath']}?(y/n): "
+      print "want to create spec-tree to #{ENV['specpath']}? (y/n): "
       ans = STDIN.gets.strip
       exit 0 unless (ans == 'y' || ans == 'yes')
     rescue Exception
@@ -38,10 +38,10 @@ namespace :spec do
     end
 
     FileUtils.mkdir_p(path)
-    FileUtils.cp("#{File.dirname(__FILE__)}/scenario.yml", File.dirname(path))
+    FileUtils.cp("#{File.dirname(__FILE__)}/scenario.yml", ENV['specroot'])
     FileUtils.cp_r("#{File.dirname(__FILE__)}/spec/.", path)
 
-    puts("Please edit \"#{ENV['specpath']}/scenario.yml\" and run !!")
+    puts("Please edit \"#{ENV['specroot']}/scenario.yml\" and run !!")
   end
 
   def gen_exec_plan(parent, node, path, ssh_options, tasks, platform)
