@@ -30,7 +30,7 @@ namespace :spec do
   def init_specpath(path)
 
     begin
-      print "create spec tree to #{ENV['specpath']}?(y/n): "
+      print "want to create spec-tree to #{ENV['specpath']}?(y/n): "
       ans = STDIN.gets.strip
       exit 0 unless (ans == 'y' || ans == 'yes')
     rescue Exception
