@@ -33,7 +33,7 @@ test_name:             # test directory name(required)
 ---
 servername:            # alias name(not required)
   host: 192.168.0.11   # ssh-accessible ip address or fqdn(required if alias exist)
-  any_attribute: "aaa" # host attributes(not required)
+  any_attribute: "aaa" # host attributes. left example available to get "property[:servername][:any_attribute]"
   :
 :
 ```
