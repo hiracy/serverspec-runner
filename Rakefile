@@ -41,7 +41,7 @@ namespace :spec do
     FileUtils.cp("#{File.dirname(__FILE__)}/scenario.yml", ENV['specroot'])
     FileUtils.cp_r("#{File.dirname(__FILE__)}/spec/.", path)
 
-    puts("Please edit \"#{ENV['specroot']}/scenario.yml\" and exec "serverspec-runner" command !!")
+    puts("Please edit \"#{ENV['specroot']}/scenario.yml\" and change directory to \"#{ENV['specroot']}\" and exec \"serverspec-runner\" command !!")
   end
 
   def gen_exec_plan(parent, node, path, ssh_options, tasks, platform)
