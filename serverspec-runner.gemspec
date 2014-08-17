@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email = ["leizhen@mbr.nifty.com"]
   spec.description = %q{simple execution framework for serverspec}
   spec.summary = %q{simple execution framework for serverspec}
-  spec.homepage = "http://serverspec.org/"
+  spec.homepage = "https://github.com/hiracy/serverspec-runner"
   spec.license = "MIT"
   
   spec.files = `git ls-files`.split($/)
