@@ -45,8 +45,7 @@ RSpec.configure do |c|
 
     c.host = ENV['TARGET_SSH_HOST']
     options = Net::SSH::Config.for(c.host, files=["~/.ssh/config"])
-
-    ssh_opts = YAML.load_file(property[:ssh_opts]) if File.exists?(property[:ssh_opts])
+    ssh_opts = YAML.load_file(property[:ssh_opts]) if (property[:ssh_opts] != nil) && File.exists?(property[:ssh_opts])
     ssh_opts ||= ssh_opts_default
     user    = options[:user] || ssh_opts[:user] || Etc.getlogin
     c.ssh   = Net::SSH.start(c.host, user, options.merge(ssh_opts))
