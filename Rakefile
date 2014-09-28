@@ -18,8 +18,8 @@ namespace :spec do
   ENV['specroot'] = ENV['specroot'] || "."
   ENV['specpath'] = "#{ENV['specroot']}/spec"
 
-  ENV['ssh_options'] = ENV['ssh_options'] || "#{ENV['specroot']}/ssh_options.yml" || "#{File.dirname(__FILE__)}/ssh_options.yml"
-  ENV['ssh_options'] = "#{File.dirname(__FILE__)}/ssh_options.yml" unless File.exists?(ENV['ssh_options'])
+  ENV['ssh_options'] = ENV['ssh_options'] || "#{ENV['specroot']}/ssh_options_default.yml" || "#{File.dirname(__FILE__)}/ssh_options_default.yml"
+  ENV['ssh_options'] = "#{File.dirname(__FILE__)}/ssh_options_default.yml" unless File.exists?(ENV['ssh_options'])
   ssh_options = YAML.load_file(ENV['ssh_options'])
   ENV['result_csv'] = ENV['result_csv'] || './_serverspec_result.csv'
   csv_file = ENV['result_csv']
