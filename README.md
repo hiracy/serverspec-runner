@@ -46,6 +46,10 @@ do tests.
 
     $ serverspec-runner -r /path/to/your_serverspec_root -s /path/to/your_scenario.yml
 
+or
+
+    $ cd /path/to/your_serverspec_root && serverspec-runner
+
 You can also specify [ssh_options.yml](http://net-ssh.github.io/ssh/v2/api/classes/Net/SSH/Config.html)(Net::SSH options) file by "-o" option for default ssh options.
 
     $ serverspec-runner -s /path/to/your_scenario.yml -o /path/to/your_ssh_options.yml
