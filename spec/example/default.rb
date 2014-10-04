@@ -4,7 +4,7 @@ describe "example" do
 
   describe "hostname実行" do
     describe command("hostname") do
-      it { return_exit_status 0 }
+      it { eq 0 }
     end
   end
 end
