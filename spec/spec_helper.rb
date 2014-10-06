@@ -5,8 +5,6 @@ require 'yaml'
 require 'csv'
 require 'serverspec-runner/util/hash'
 
-set :backend, :exec
-
 ssh_opts_default = YAML.load_file(ENV['ssh_options'])
 csv_path = ENV['result_csv']
 explains = []
@@ -43,7 +41,11 @@ RSpec.configure do |c|
     ssh_opts ||= ssh_opts_default
     property[:ssh_opts].each { |k, v| ssh_opts[k.to_sym] = v } if property[:ssh_opts]
     user    = options[:user] || ssh_opts[:user] || Etc.getlogin
-    c.ssh   = Net::SSH.start(c.host, user, options.merge(ssh_opts))
+    options.merge!(ssh_opts)
+    set :ssh_options, options
+    set :backend, :ssh
+  else
+    set :backend, :exec
   end
 
   c.before(:suite) do
