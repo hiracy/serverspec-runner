@@ -39,6 +39,8 @@ namespace :spec do
 
     FileUtils.mkdir_p(path)
     FileUtils.cp("#{File.dirname(__FILE__)}/scenario.yml", ENV['specroot'])
+    FileUtils.cp("#{File.dirname(__FILE__)}/ssh_options_default.yml", ENV['specroot'])
+    FileUtils.cp("#{File.dirname(__FILE__)}/.rspec", ENV['specroot'])
     FileUtils.cp_r("#{File.dirname(__FILE__)}/spec/.", path)
 
     puts("Please edit \"#{ENV['specroot']}/scenario.yml\" and change directory to \"#{ENV['specroot']}\" and exec \"serverspec-runner\" command !!")
