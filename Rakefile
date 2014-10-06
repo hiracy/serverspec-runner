@@ -72,7 +72,6 @@ namespace :spec do
         platform[host_alias.to_sym][:ssh_opts].each { |k, v| ssh_options[k.to_sym] = v } if platform[host_alias.to_sym].include?(:ssh_opts)
 
         tasks << "#{path}::#{host_alias}"
-        return ''
       end
     end
 
