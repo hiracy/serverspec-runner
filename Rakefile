@@ -209,7 +209,16 @@ namespace :spec do
         n =  r[0].each_char.map{|c| c.bytesize == 1 ? 1 : 2}.reduce(0, &:+)
         pad_mid = (" " * (maxlen - n)) + " | "
         pad_tail = (" " * ("result".length - r[1].length)) + " |"
-        puts "|#{r[0]}#{pad_mid}#{r[1]}#{pad_tail}"
+
+        if r[1] == 'OK'
+          s_effect = "\e[32m"
+          e_effect = "\e[m"
+        elsif  r[1] == 'NG'
+          s_effect = "\e[31m"
+          e_effect = "\e[m"
+        end
+        
+        puts "|#{r[0]}#{pad_mid}#{s_effect}#{r[1]}#{e_effect}#{pad_tail}"
   
         if is_header
           puts spacer
