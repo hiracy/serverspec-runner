@@ -120,7 +120,7 @@ You can use -e option and choose following outputs.
 * csv : CSV file format
 * bool: only 'ok' or 'ng' result string.
 
-For more detail. You can see from `serverspec -h` command.
+For more detail. You can see from `serverspec-runner -h` command.
 
 ----
 
