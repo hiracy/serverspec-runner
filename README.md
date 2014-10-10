@@ -93,17 +93,18 @@ end
 
 You can get the following outputs.
 
+* serverspec-runner -t aa  : asci-art table(default)
 ```
 +------------------------------------------+
 |description                      | result |
 +------------------------------------------+
-|example@anyhost-01(172.30.4.131) |        |
+|example@anyhost-01(192.168.1.11) |        |
 |  nginx check install            | OK     |
 |  nginx check running            | NG     |
 |  nginx check process            | OK     |
 |  nginx worker_connection:1024   | OK     |
 |  nginx logrotate interval       | NG     |
-|example@anyhost-02(172.30.4.171) |        |
+|example@anyhost-02(192.168.1.12) |        |
 |  nginx check install            | OK     |
 |  nginx check running            | NG     |
 |  nginx check process            | OK     |
@@ -113,12 +114,50 @@ You can get the following outputs.
 
 ```
 
-You can use -e option and choose following outputs.
+* serverspec-runner -t mkd : markdown table format
+```
+|description                       | result |
+|:---------------------------------|:------:|
+|example@anyhost-01(192.168.1.11)  |        |
+|  nginx check install             | OK     |
+|  nginx check running             | NG     |
+|  nginx check process             | OK     |
+|  nginx worker_connection:1024    | OK     |
+|  nginx logrotate interval        | NG     |
+|example@anyhost-02(192.168.1.12)  |        |
+|  nginx check install             | OK     |
+|  nginx check running             | OK     |
+|  nginx check process             | OK     |
+|  nginx worker_connection:1024    | OK     |
+|  nginx logrotate interval        | NG     |
+```
 
-* aa  : asci-art table(default)
-* mkd : markdown table format
-* csv : CSV file format
-* bool: only 'ok' or 'ng' result string.
+this text parsed for markdown to that
+
+|description                       | result |
+|:---------------------------------|:------:|
+|example@anyhost-01(192.168.1.11)  |        |
+|  nginx check install             | OK     |
+|  nginx check running             | NG     |
+|  nginx check process             | OK     |
+|  nginx worker_connection:1024    | OK     |
+|  nginx logrotate interval        | NG     |
+|example@anyhost-02(192.168.1.12)  |        |
+|  nginx check install             | OK     |
+|  nginx check running             | OK     |
+|  nginx check process             | OK     |
+|  nginx worker_connection:1024    | OK     |
+|  nginx logrotate interval        | NG     |
+
+* serverspec-runner -t bool : only 'ok' or 'ng' result string.t
+You can use for cluster monitoring system health.
+```
+ng
+```
+
+* serverspec-runner --result_csv [csv file path] : output result CSV file
+You can get result CSV format file.
+
 
 For more detail. You can see from `serverspec-runner -h` command.
 
