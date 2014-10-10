@@ -218,7 +218,7 @@ namespace :spec do
           e_effect = "\e[m"
         end
         
-        puts "|#{r[0]}#{pad_mid}#{s_effect}#{r[1]}#{e_effect}#{pad_tail}"
+        puts "|#{s_effect}#{r[0]}#{e_effect}#{pad_mid}#{s_effect}#{r[1]}#{e_effect}#{pad_tail}"
   
         if is_header
           puts spacer
