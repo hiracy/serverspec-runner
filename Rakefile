@@ -23,7 +23,7 @@ namespace :spec do
   ENV['result_csv'] = ENV['result_csv'] || './_serverspec_result.csv'
   csv_file = ENV['result_csv']
   CSV.open(csv_file, 'w') { |w| w << ['description', 'result'] }
-  ENV['explain'] = ENV['explain'] || "long"
+  ENV['explain'] = ENV['explain'] || "short"
   ENV['tableformat'] = ENV['tableformat'] || "aa"
   ENV['scenario'] = ENV['scenario'] || "./scenario.yml"
 
