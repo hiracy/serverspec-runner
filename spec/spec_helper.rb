@@ -10,6 +10,14 @@ csv_path = ENV['result_csv']
 explains = []
 results = []
 
+def get_example_desc(example_group, descriptions)
+
+  descriptions << example_group[:description]
+  return descriptions if example_group[:parent_example_group] == nil
+
+  get_example_desc(example_group[:parent_example_group], descriptions)
+end
+
 RSpec.configure do |c|
 
   c.expose_current_running_example_as :example
@@ -48,6 +56,8 @@ RSpec.configure do |c|
     set :backend, :exec
   end
 
+  prev_desc_hierarchy = nil
+
   c.before(:suite) do
     entity_host = (((ENV['TARGET_HOST'] != ENV['TARGET_SSH_HOST']) && (ENV['TARGET_SSH_HOST'] != nil)) ? "(#{ENV['TARGET_SSH_HOST']})" : "")
     puts "\e[33m"
@@ -59,23 +69,29 @@ RSpec.configure do |c|
   end
 
   c.after(:each) do
+
     if ENV['explain'] == 'long'
       explains << "  " + example.metadata[:full_description] + (RSpec::Matchers.generated_description || '')
+      results << (self.example.exception ? 'NG' : 'OK')
     else
 
-      second_depth = self.example.metadata.depth - 3
-      h = self.example.metadata
+      spacer = ''
+      desc_hierarchy = get_example_desc(self.example.metadata[:example_group], []).reverse
+      desc_hierarchy.each_with_index do |ex, i|
+        spacer += '  '
 
-      second_depth.times do |i|
-        h = h[:example_group]
+        if prev_desc_hierarchy != nil && prev_desc_hierarchy.length > i && prev_desc_hierarchy[i] == desc_hierarchy[i]
+        else
+          explains << spacer + ex
+          results << ''
+        end
       end
 
-      second_desc = h[:description]
-      first_desc = h[:example_group][:description]
+      explains << spacer + '  ' + RSpec::Matchers.generated_description
+      results << (self.example.exception ? 'NG' : 'OK')
 
-      explains << "  " + first_desc + " " + second_desc
+      prev_desc_hierarchy = desc_hierarchy
     end
-    results << (self.example.exception ? 'NG' : 'OK')
   end
 
   c.after(:suite) do
