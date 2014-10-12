@@ -207,17 +207,20 @@ namespace :spec do
       is_header = true
       CSV.foreach(csv_file) do |r|
         n =  r[0].each_char.map{|c| c.bytesize == 1 ? 1 : 2}.reduce(0, &:+)
-        pad_mid = (" " * (maxlen - n)) + " | "
-        pad_tail = (" " * ("result".length - r[1].length)) + " |"
 
         if r[1] == 'OK'
           s_effect = "\e[32m"
           e_effect = "\e[m"
+          r[1] = '  ' + r[1]
         elsif  r[1] == 'NG'
           s_effect = "\e[31m"
           e_effect = "\e[m"
+          r[1] = '  ' + r[1]
         end
         
+        pad_mid = (" " * (maxlen - n)) + " | "
+        pad_tail = (" " * ("result".length - r[1].length)) + " |"
+
         puts "|#{s_effect}#{r[0]}#{e_effect}#{pad_mid}#{s_effect}#{r[1]}#{e_effect}#{pad_tail}"
   
         if is_header
