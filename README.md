@@ -59,34 +59,16 @@ For example. You write serverspec code like this.
 
 ```
 describe "nginx" do
-  describe "check install" do
-    describe package('nginx') do
-      it { should be_installed }
-    end
-  end
-    
+
   describe "check running" do
     describe process('nginx') do
       it { should be_running }
     end
   end
-    
-  describe "check process" do
-    describe process('nginx') do
-      it { should be_enabled }
-    end
-  end
 
-  describe "worker_connection:1024" do
-    describe file('/etc/nginx/nginx.conf') do
-      it { should contain "worker_connections 1024;" }
-    end
-  end
-
-  describe "logrotate interval" do
-    describe file('/etc/logrotate.d/nginx') do
-      it { should contain "rotate 14" }
-    end
+  describe file('/etc/logrotate.d/nginx') do
+    it { should be_file }
+    it { should contain "rotate 14" }
   end
 end
 ```
@@ -95,69 +77,92 @@ You can get the following outputs.
 
 * serverspec-runner -t aa  : asci-art table(default)
 ```
-+------------------------------------------+
-|description                      | result |
-+------------------------------------------+
-|example@anyhost-01(192.168.1.11) |        |
-|  nginx check install            | OK     |
-|  nginx check running            | NG     |
-|  nginx check process            | OK     |
-|  nginx worker_connection:1024   | OK     |
-|  nginx logrotate interval       | NG     |
-|example@anyhost-02(192.168.1.12) |        |
-|  nginx check install            | OK     |
-|  nginx check running            | NG     |
-|  nginx check process            | OK     |
-|  nginx worker_connection:1024   | OK     |
-|  nginx logrotate interval       | NG     |
-+------------------------------------------+
-
++-------------------------------------------+
+|description                       | result |
++-------------------------------------------+
+|example@anyhost-01(192.168.11.1)  |        |
+|  nginx                           |        |
+|    check running                 |        |
+|      Process "nginx"             |        |
+|        should be running         |   OK   |
+|    File "/etc/logrotate.d/nginx" |        |
+|      should be file              |   OK   |
+|      should contain "rotate 14"  |   OK   |
+|example@anyhost-02(192.168.11.2)  |        |
+|  nginx                           |        |
+|    check running                 |        |
+|      Process "nginx"             |        |
+|        should be running         |   OK   |
+|    File "/etc/logrotate.d/nginx" |        |
+|      should be file              |   OK   |
+|      should contain "rotate 14"  |   NG   |
++-------------------------------------------+
 ```
 
 * serverspec-runner -t mkd : markdown table format
 ```
 |description                       | result |
 |:---------------------------------|:------:|
-|example@anyhost-01(192.168.1.11)  |        |
-|  nginx check install             | OK     |
-|  nginx check running             | NG     |
-|  nginx check process             | OK     |
-|  nginx worker_connection:1024    | OK     |
-|  nginx logrotate interval        | NG     |
-|example@anyhost-02(192.168.1.12)  |        |
-|  nginx check install             | OK     |
-|  nginx check running             | OK     |
-|  nginx check process             | OK     |
-|  nginx worker_connection:1024    | OK     |
-|  nginx logrotate interval        | NG     |
+|example@anyhost-01(192.168.11.1)  |        |
+|  nginx                           |        |
+|    check running                 |        |
+|      Process "nginx"             |        |
+|        should be running         |   OK   |
+|    File "/etc/logrotate.d/nginx" |        |
+|      should be file              |   OK   |
+|      should contain "rotate 14"  |   OK   |
+|example@anyhost-02(192.168.11.2)  |        |
+|  nginx                           |        |
+|    check running                 |        |
+|      Process "nginx"             |        |
+|        should be running         |   OK   |
+|    File "/etc/logrotate.d/nginx" |        |
+|      should be file              |   OK   |
+|      should contain "rotate 14"  |   NG   |
 ```
 
-this text parsed for markdown to that
+this text parsed for markdown to that(use -e long option)
 
-|description                       | result |
-|:---------------------------------|:------:|
-|example@anyhost-01(192.168.1.11)  |        |
-|  nginx check install             | OK     |
-|  nginx check running             | NG     |
-|  nginx check process             | OK     |
-|  nginx worker_connection:1024    | OK     |
-|  nginx logrotate interval        | NG     |
-|example@anyhost-02(192.168.1.12)  |        |
-|  nginx check install             | OK     |
-|  nginx check running             | OK     |
-|  nginx check process             | OK     |
-|  nginx worker_connection:1024    | OK     |
-|  nginx logrotate interval        | NG     |
+|description                                                      | result |
+|:----------------------------------------------------------------|:------:|
+|example@anyhost-01(192.168.11.1)                                 |        |
+|  nginx check running Process "nginx" should be running          |   OK   |
+|  nginx File "/etc/logrotate.d/nginx" should be file             |   OK   |
+|  nginx File "/etc/logrotate.d/nginx" should contain "rotate 14" |   OK   |
+|example@anyhost-01(192.168.11.2)                                 |        |
+|  nginx check running Process "nginx" should be running          |   OK   |
+|  nginx File "/etc/logrotate.d/nginx" should be file             |   OK   |
+|  nginx File "/etc/logrotate.d/nginx" should contain "rotate 14" |   NG   |
 
 * serverspec-runner -t bool : only 'ok' or 'ng' result string.t
 You can use for cluster monitoring system health.
+
 ```
 ng
 ```
 
-* serverspec-runner --result_csv [csv file path] : output result CSV file
-You can get result CSV format file.
+* serverspec-runner -t csv : CSV file format
+You can get result CSV format output and can use redirect to file.
 
+```
+description,,,,,result
+example@anyhost-01(192.168.11.1),,,,,
+,nginx,,,,
+,,check running,,,
+,,,Process "nginx",,
+,,,,should be running,OK
+,,File "/etc/logrotate.d/nginx",,,
+,,,should be file,,OK
+,,,should contain "rotate 14",,OK
+example@anyhost-02(192.168.11.2),,,,,
+,nginx,,,,
+,,check running,,,
+,,,Process "nginx",,
+,,,,should be running,OK
+,,File "/etc/logrotate.d/nginx",,,
+,,,should be file,,OK
+,,,should contain "rotate 14",,NG
+```
 
 For more detail. You can see from `serverspec-runner -h` command.
 
