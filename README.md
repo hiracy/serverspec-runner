@@ -121,7 +121,7 @@ You can get the following outputs.
 |      should contain "rotate 14"  |   NG   |
 ```
 
-this text parsed for markdown to that(use -e long option)
+this example parsed for markdown to that(use -e long option)
 
 |description                                                      | result |
 |:----------------------------------------------------------------|:------:|
