@@ -184,8 +184,16 @@ namespace :spec do
 
       puts ret
     elsif ENV['tableformat'] == 'csv'
+
+      maxrows = 0
       CSV.foreach(csv_file) do |r|
-        puts "#{r[0].strip}#{r[1].empty? ? '': ','}#{r[1]}"
+        maxrows = r[2].to_i if r[2].to_i > maxrows
+      end
+      maxrows += 1 # host row
+
+      CSV.foreach(csv_file) do |r|
+        pad_comma = ',' * (maxrows - r[0].split(',').length)
+        puts "#{r[0]}#{pad_comma},#{r[1]}"
       end
     else
       maxlen = 0
@@ -207,18 +215,21 @@ namespace :spec do
       is_header = true
       CSV.foreach(csv_file) do |r|
         n =  r[0].each_char.map{|c| c.bytesize == 1 ? 1 : 2}.reduce(0, &:+)
-        pad_mid = (" " * (maxlen - n)) + " | "
-        pad_tail = (" " * ("result".length - r[1].length)) + " |"
 
         if r[1] == 'OK'
           s_effect = "\e[32m"
           e_effect = "\e[m"
+          r[1] = '  ' + r[1]
         elsif  r[1] == 'NG'
           s_effect = "\e[31m"
           e_effect = "\e[m"
+          r[1] = '  ' + r[1]
         end
         
-        puts "|#{s_effect}#{r[0]}#{e_effect}#{pad_mid}#{s_effect}#{r[1]}#{e_effect}#{pad_tail}"
+        pad_mid = (" " * (maxlen - n)) + " | "
+        pad_tail = (" " * ("result".length - r[1].length)) + " |"
+
+        puts "|#{s_effect}#{r[0]}#{e_effect}#{pad_mid}#{s_effect}#{r[1]}#{e_effect}#{pad_tail}#{r[2]}"
   
         if is_header
           puts spacer

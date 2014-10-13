@@ -9,6 +9,17 @@ ssh_opts_default = YAML.load_file(ENV['ssh_options'])
 csv_path = ENV['result_csv']
 explains = []
 results = []
+row_num = []
+spacer_char = '  ' unless ENV['tableformat'] == 'csv'
+spacer_char = ',' if ENV['tableformat'] == 'csv'
+
+def get_example_desc(example_group, descriptions)
+
+  descriptions << example_group[:description]
+  return descriptions if example_group[:parent_example_group] == nil
+
+  get_example_desc(example_group[:parent_example_group], descriptions)
+end
 
 RSpec.configure do |c|
 
@@ -48,6 +59,8 @@ RSpec.configure do |c|
     set :backend, :exec
   end
 
+  prev_desc_hierarchy = nil
+
   c.before(:suite) do
     entity_host = (((ENV['TARGET_HOST'] != ENV['TARGET_SSH_HOST']) && (ENV['TARGET_SSH_HOST'] != nil)) ? "(#{ENV['TARGET_SSH_HOST']})" : "")
     puts "\e[33m"
@@ -56,32 +69,42 @@ RSpec.configure do |c|
 
     explains << "#{role_name}@#{ENV['TARGET_HOST']}#{entity_host}"
     results << ""
+    row_num << 1
   end
 
   c.after(:each) do
+
     if ENV['explain'] == 'long'
-      explains << "  " + example.metadata[:full_description] + (RSpec::Matchers.generated_description || '')
+      explains << spacer_char + example.metadata[:full_description] + (RSpec::Matchers.generated_description || '')
+      results << (self.example.exception ? 'NG' : 'OK')
+      row_num << 1
     else
 
-      second_depth = self.example.metadata.depth - 3
-      h = self.example.metadata
+      spacer = ''
+      desc_hierarchy = get_example_desc(self.example.metadata[:example_group], []).reverse
+      desc_hierarchy.each_with_index do |ex, i|
+        spacer += spacer_char
 
-      second_depth.times do |i|
-        h = h[:example_group]
+        if prev_desc_hierarchy != nil && prev_desc_hierarchy.length > i && prev_desc_hierarchy[i] == desc_hierarchy[i]
+        else
+          explains << spacer + ex
+          results << ''
+          row_num << i + 1
+        end
       end
 
-      second_desc = h[:description]
-      first_desc = h[:example_group][:description]
+      explains << spacer + spacer_char + RSpec::Matchers.generated_description
+      results << (self.example.exception ? 'NG' : 'OK')
+      row_num << desc_hierarchy.length + 1
 
-      explains << "  " + first_desc + " " + second_desc
+      prev_desc_hierarchy = desc_hierarchy
     end
-    results << (self.example.exception ? 'NG' : 'OK')
   end
 
   c.after(:suite) do
     CSV.open(csv_path, 'a') do |writer|
       explains.each_with_index do |v, i|
-        writer << [v, results[i]]
+        writer << [v, results[i], row_num[i]]
       end
     end
   end
