@@ -229,7 +229,7 @@ namespace :spec do
         pad_mid = (" " * (maxlen - n)) + " | "
         pad_tail = (" " * ("result".length - r[1].length)) + " |"
 
-        puts "|#{s_effect}#{r[0]}#{e_effect}#{pad_mid}#{s_effect}#{r[1]}#{e_effect}#{pad_tail}#{r[2]}"
+        puts "|#{s_effect}#{r[0]}#{e_effect}#{pad_mid}#{s_effect}#{r[1]}#{e_effect}#{pad_tail}"
   
         if is_header
           puts spacer
