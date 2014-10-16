@@ -56,10 +56,11 @@ namespace :spec do
 
     if abs_node.kind_of?(Hash)
       abs_node.keys.each do |n|
-        path <<  '::' unless path.empty?
-        path << n.to_s
-        path = gen_exec_plan(abs_node, n, path, ssh_options, tasks, platform)
+        path.push(n.to_s)
+        gen_exec_plan(abs_node, n, path, ssh_options, tasks, platform)
       end
+
+      path.pop
     elsif abs_node.kind_of?(Array)
       abs_node.each do |host_alias|
         if platform.include?(host_alias.to_sym)
@@ -70,12 +71,11 @@ namespace :spec do
         end
 
         platform[host_alias.to_sym][:ssh_opts].each { |k, v| ssh_options[k.to_sym] = v } if platform[host_alias.to_sym].include?(:ssh_opts)
-
-        tasks << "#{path}::#{host_alias}"
+        tasks << "#{path.join('::')}::#{host_alias}"
       end
-    end
 
-    return path
+      path.pop
+    end
   end
 
   def exec_tasks(parent, node, real_path, platform)
@@ -85,18 +85,16 @@ namespace :spec do
     else
       abs_node = parent[node]
     end
-    
+
     if abs_node.kind_of?(Hash)
       abs_node.keys.each do |n|
-        real_path << n
-        real_path = exec_tasks(abs_node, n, real_path, platform)
+        real_path.push(n)
+        exec_tasks(abs_node, n, real_path, platform)
       end
+
+      real_path.pop
     elsif abs_node.kind_of?(Array)
-      task_path = ''
-      real_path.map.each do |p|
-        task_path << '::' unless task_path.empty?
-        task_path << p
-      end
+      task_path = "#{real_path.join('::')}"
 
       abs_node.each do |host_alias|
         desc "Run serverspec to #{task_path}@#{host_alias}"
@@ -116,10 +114,8 @@ namespace :spec do
         end
       end
 
-      return []
+      real_path.pop
     end
-
-    return real_path
   end
 
   if !Dir.exists?(ENV['specpath'])
@@ -171,7 +167,7 @@ namespace :spec do
   end
 
   tasks = []
-  gen_exec_plan(nil, scenarios, '', ssh_options, tasks, platform)
+  gen_exec_plan(nil, scenarios, [], ssh_options, tasks, platform)
 
   task :stdout do
 
@@ -201,9 +197,9 @@ namespace :spec do
         n =  r[0].each_char.map{|c| c.bytesize == 1 ? 1 : 2}.reduce(0, &:+)
         maxlen = n if n > maxlen
       end
-  
+
       pad_spaces = 4
-  
+
       spacer = nil
       if ENV['tableformat'] == 'mkd'
         spacer = "|:" + ("-" * maxlen) + "|:" + ("-" * "result".length) + ":|"
@@ -225,12 +221,12 @@ namespace :spec do
           e_effect = "\e[m"
           r[1] = '  ' + r[1]
         end
-        
+
         pad_mid = (" " * (maxlen - n)) + " | "
         pad_tail = (" " * ("result".length - r[1].length)) + " |"
 
         puts "|#{s_effect}#{r[0]}#{e_effect}#{pad_mid}#{s_effect}#{r[1]}#{e_effect}#{pad_tail}"
-  
+
         if is_header
           puts spacer
           is_header = false
