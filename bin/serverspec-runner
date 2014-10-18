@@ -16,7 +16,7 @@ opts = GetoptLong.new(
   ["--tableformat",  "-t", GetoptLong::REQUIRED_ARGUMENT],
   ["--help",         "-h", GetoptLong::NO_ARGUMENT],
   ["--tmpdir",       "-1", GetoptLong::REQUIRED_ARGUMENT],
-  ["--task",         "-2", GetoptLong::REQUIRED_ARGUMENT]
+  ["--tasks",        "-T", GetoptLong::REQUIRED_ARGUMENT]
 )
 
 opts.each do |opt, arg|
@@ -33,7 +33,7 @@ opts.each do |opt, arg|
     ENV['tableformat'] = arg
   when '--tmpdir'
     ENV['tmpdir'] = arg
-  when '--task'
+  when '--tasks'
     raketask += "::" + arg
   else
     puts "Usage: serverspec-runner (options)"
@@ -42,6 +42,7 @@ opts.each do |opt, arg|
     puts "-o, --ssh_options  SSH_OPTIONS_FILE     path to ssh options yml file"
     puts "-e, --explain      (short|long)         specify result explain length(default: short)"
     puts "-t, --tableformat  (aa|mkd|csv|bool)    specify result table type(default: aa)"
+    puts "-T, --tasks                             display the tasks with descriptions(exec rake -T)"
     puts "-h, --help                              show help"
     exit 0
   end
