@@ -1,10 +1,28 @@
 require "#{File.dirname(__FILE__)}/../spec_helper"
 
-describe "example" do
+describe package('httpd'), :if => os[:family] == 'redhat' do
+  it { should be_installed }
+end
 
-  describe "hostname実行" do
-    describe command("hostname") do
-      it { eq 0 }
-    end
-  end
+describe package('apache2'), :if => os[:family] == 'ubuntu' do
+  it { should be_installed }
+end
+
+describe service('httpd'), :if => os[:family] == 'redhat' do
+  it { should be_enabled }
+  it { should be_running }
+end
+
+describe service('apache2'), :if => os[:family] == 'ubuntu' do
+  it { should be_enabled }
+  it { should be_running }
+end
+
+describe service('org.apache.httpd'), :if => os[:family] == 'darwin' do
+  it { should be_enabled }
+  it { should be_running }
+end
+
+describe port(80) do
+  it { should be_listening }
 end
