@@ -7,6 +7,7 @@ require 'rake'
 require 'getoptlong'
 
 raketask =  'spec'
+showtasks = false
 
 opts = GetoptLong.new(
   ["--scenario",     "-s", GetoptLong::REQUIRED_ARGUMENT],
@@ -16,7 +17,8 @@ opts = GetoptLong.new(
   ["--tableformat",  "-t", GetoptLong::REQUIRED_ARGUMENT],
   ["--help",         "-h", GetoptLong::NO_ARGUMENT],
   ["--tmpdir",       "-1", GetoptLong::REQUIRED_ARGUMENT],
-  ["--tasks",        "-T", GetoptLong::REQUIRED_ARGUMENT]
+  ["--raketask",     "-2", GetoptLong::REQUIRED_ARGUMENT],
+  ["--tasks",        "-T", GetoptLong::NO_ARGUMENT]
 )
 
 opts.each do |opt, arg|
@@ -33,8 +35,10 @@ opts.each do |opt, arg|
     ENV['tableformat'] = arg
   when '--tmpdir'
     ENV['tmpdir'] = arg
-  when '--tasks'
+  when '--raketask'
     raketask += "::" + arg
+  when '--tasks'
+    showtasks = true
   else
     puts "Usage: serverspec-runner (options)"
     puts "-s, --scenario     SCENARIO_FILE        path to scenario yml file"
@@ -48,5 +52,17 @@ opts.each do |opt, arg|
   end
 end
 
+Rake::TaskManager.record_task_metadata = showtasks
 load "#{File.dirname(__FILE__)}/../Rakefile"
+
+if showtasks
+  mLen = (Rake.application.tasks.max_by { |t| t.name_with_args.size }).name_with_args.size
+  Rake.application.tasks.reject{|t| ['spec:all', 'spec:stdout'].include?(t.name_with_args)}.each do |t|
+    printf("%-#{mLen + 2}s  # %s\n",
+      t.name_with_args,
+      t.comment)
+  end
+  exit(0)
+end
+
 Rake::Task[raketask.to_sym].invoke
