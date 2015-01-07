@@ -1,28 +1,26 @@
 require "#{File.dirname(__FILE__)}/../spec_helper"
 
-describe package('httpd'), :if => os[:family] == 'redhat' do
-  it { should be_installed }
+describe user('root') do
+  it { should exist }
+  it { should have_uid 0 }
+  it { should have_home_directory '/root' }
 end
 
-describe package('apache2'), :if => os[:family] == 'ubuntu' do
-  it { should be_installed }
+describe group('root') do
+  it { should have_gid 0 }
 end
 
-describe service('httpd'), :if => os[:family] == 'redhat' do
-  it { should be_enabled }
-  it { should be_running }
+describe 'Filesystem' do
+  describe file('/') do
+    it { should be_mounted }
+  end
 end
 
-describe service('apache2'), :if => os[:family] == 'ubuntu' do
-  it { should be_enabled }
-  it { should be_running }
+describe host('www.google.com') do
+  it { should be_resolvable }
+  it { should be_reachable }
 end
 
-describe service('org.apache.httpd'), :if => os[:family] == 'darwin' do
-  it { should be_enabled }
-  it { should be_running }
-end
-
-describe port(80) do
-  it { should be_listening }
+describe command('dmesg | grep "FAIL\|Fail\|fail\|ERROR\|Error\|error"') do
+  its(:exit_status){ should_not eq 0 }
 end
