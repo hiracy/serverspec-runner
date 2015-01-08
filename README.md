@@ -58,6 +58,8 @@ You can also specify [ssh_options.yml](http://net-ssh.github.io/net-ssh/classes/
 For example. You write serverspec code like this.
 
 ```
+require 'spec_helper'
+
 describe "nginx" do
 
   describe "check running" do
