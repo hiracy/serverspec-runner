@@ -35,7 +35,7 @@ RSpec.configure do |c|
     end
   end
   sliced = run_path.slice((speck_i + 1)..(run_path.size - 2))
-  role_name = sliced.join('-')
+  role_name = sliced.join('/')
 
   if ENV['ASK_SUDO_PASSWORD']
     require 'highline/import'
