@@ -102,9 +102,7 @@ namespace :spec do
 
           fpath = task_path.gsub(/::/, '/')
           t.pattern = %W[
-            #{ENV['specpath']}/#{fpath}/{default.rb}
-            #{ENV['specpath']}/#{fpath}/{#{platform[host_alias.to_sym][:platform_name]}.rb}
-            #{ENV['specpath']}/#{fpath}/{#{platform[host_alias.to_sym][:platform_detail_name]}.rb}
+            #{ENV['specpath']}/#{fpath}/*.rb
           ]
 
           raise "\e[31mspec file not found!![#{t.pattern.to_s}]\e[m" if Dir.glob(t.pattern).empty?
