@@ -78,6 +78,7 @@ end
 You can get the following outputs.
 
 * serverspec-runner -t aa  : asci-art table(default)
+
 ```
 +-------------------------------------------+
 |description                       | result |
@@ -102,6 +103,7 @@ You can get the following outputs.
 ```
 
 * serverspec-runner -t mkd : markdown table format
+
 ```
 |description                       | result |
 |:---------------------------------|:------:|
@@ -136,7 +138,8 @@ this example parsed for markdown to that(use -e long option)
 |  nginx File "/etc/logrotate.d/nginx" should be file             |   OK   |
 |  nginx File "/etc/logrotate.d/nginx" should contain "rotate 14" |   NG   |
 
-* serverspec-runner -t bool : only 'ok' or 'ng' result string.t
+* serverspec-runner -t bool : only 'ok' or 'ng' string
+
 You can use for cluster monitoring system health.
 
 ```
@@ -144,6 +147,7 @@ ng
 ```
 
 * serverspec-runner -t csv : CSV file format
+
 You can get result CSV format output and can use redirect to file.
 
 ```
