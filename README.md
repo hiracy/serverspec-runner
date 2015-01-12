@@ -143,6 +143,10 @@ this example parsed for markdown to that(use -e long option)
 You can use for cluster monitoring system health.
 
 ```
+ok
+```
+
+```
 ng
 ```
 
