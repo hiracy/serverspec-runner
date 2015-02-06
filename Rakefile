@@ -29,21 +29,24 @@ namespace :spec do
 
   def init_specpath(path)
 
+    abs_path = File::expand_path(path)
+
     begin
-      print "want to create spec-tree to #{ENV['specpath']}? (y/n): "
+      print "want to create spec-tree to #{abs_path}? (y/n): "
       ans = STDIN.gets.strip
       exit 0 unless (ans == 'y' || ans == 'yes')
     rescue Exception
       exit 0
     end
 
-    FileUtils.mkdir_p(path)
-    FileUtils.cp("#{File.dirname(__FILE__)}/scenario.yml", ENV['specroot'])
-    FileUtils.cp("#{File.dirname(__FILE__)}/ssh_options_default.yml", ENV['specroot'])
-    FileUtils.cp("#{File.dirname(__FILE__)}/.rspec", ENV['specroot'])
-    FileUtils.cp_r("#{File.dirname(__FILE__)}/spec/.", path)
+    FileUtils.mkdir_p("#{path}/lib")
+    FileUtils.cp("#{File.dirname(__FILE__)}/scenario.yml", path)
+    FileUtils.cp("#{File.dirname(__FILE__)}/ssh_options_default.yml", path)
+    FileUtils.cp("#{File.dirname(__FILE__)}/.rspec", path)
+    FileUtils.cp_r("#{File.dirname(__FILE__)}/spec", path)
+    FileUtils.cp_r("#{File.dirname(__FILE__)}/lib/extension", "#{path}/lib")
 
-    puts("Please edit \"#{ENV['specroot']}/scenario.yml\" and change directory to \"#{ENV['specroot']}\" and exec \"serverspec-runner\" command !!")
+    puts("Please edit \"#{abs_path}/scenario.yml\" and change directory to \"#{abs_path}\" and exec \"serverspec-runner\" command !!")
   end
 
   def gen_exec_plan(parent, node, path, ssh_options, tasks, platform)
@@ -117,7 +120,7 @@ namespace :spec do
   end
 
   if !Dir.exists?(ENV['specpath'])
-    init_specpath(ENV['specpath'])
+    init_specpath(ENV['specroot'])
     exit 0
   end
 

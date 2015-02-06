@@ -5,6 +5,11 @@ require 'yaml'
 require 'csv'
 require 'serverspec-runner/util/hash'
 
+# require extension libraries
+Dir.glob([
+  ENV['specroot'] + '/lib/extension/serverspec/**/*.rb',
+  ENV['specroot'] + '/lib/extension/specinfra/**/*.rb']).each {|f| require f}
+
 ssh_opts_default = YAML.load_file(ENV['ssh_options'])
 csv_path = ENV['result_csv']
 explains = []
