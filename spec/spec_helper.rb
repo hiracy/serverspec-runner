@@ -93,7 +93,7 @@ RSpec.configure do |c|
         end
       end
 
-      explains << spacer + spacer_char + RSpec::Matchers.generated_description
+      explains << spacer + spacer_char + (RSpec::Matchers.generated_description || '')
       results << (self.example.exception ? 'NG' : 'OK')
       row_num << desc_hierarchy.length + 1
 
