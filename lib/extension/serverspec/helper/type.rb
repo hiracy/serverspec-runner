@@ -5,7 +5,7 @@ module Serverspec
         mysql
       )
 
-      types.each {|type| require "serverspec/type/#{type}" }
+      types.each {|type| require "extension/serverspec/type/#{type}" }
 
       types.each do |type|
         define_method type do |*args|
