@@ -22,7 +22,7 @@ namespace :spec do
     end
   end
 
-  Dir.chdir(ENV['specroot'])
+  Dir.chdir(ENV['specroot']) if Dir.exists?(ENV['specroot'])
 
   ENV['specpath'] = "#{ENV['specroot']}/spec"
   ENV['ssh_options'] = ENV['ssh_options'] || "#{ENV['specroot']}/ssh_options_default.yml" || "#{File.dirname(__FILE__)}/ssh_options_default.yml"
