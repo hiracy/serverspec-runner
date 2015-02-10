@@ -14,9 +14,17 @@ namespace :spec do
 
   ENV['EXEC_PATH'] = '/usr/local/bin:/usr/sbin:/sbin:/usr/bin:/bin'
 
-  ENV['specroot'] = ENV['specroot'] || "."
-  ENV['specpath'] = "#{ENV['specroot']}/spec"
+  if ENV['specroot'] == nil
+    if ENV['scenario'] != nil
+      ENV['specroot'] = "#{File.dirname(ENV['scenario'])}"
+    else
+      ENV['specroot'] = '.'
+    end
+  end
 
+  Dir.chdir(ENV['specroot'])
+
+  ENV['specpath'] = "#{ENV['specroot']}/spec"
   ENV['ssh_options'] = ENV['ssh_options'] || "#{ENV['specroot']}/ssh_options_default.yml" || "#{File.dirname(__FILE__)}/ssh_options_default.yml"
   ENV['ssh_options'] = "#{File.dirname(__FILE__)}/ssh_options_default.yml" unless File.exists?(ENV['ssh_options'])
   ssh_options = YAML.load_file(ENV['ssh_options'])
