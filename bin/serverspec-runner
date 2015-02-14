@@ -15,7 +15,7 @@ opts = GetoptLong.new(
   ["--ssh_options",  "-o", GetoptLong::REQUIRED_ARGUMENT],
   ["--explain",      "-e", GetoptLong::REQUIRED_ARGUMENT],
   ["--tableformat",  "-t", GetoptLong::REQUIRED_ARGUMENT],
-  ["--parallel",     "-p", GetoptLong::NO_ARGUMENT],
+  ["--parallel",     "-p", GetoptLong::REQUIRED_ARGUMENT],
   ["--help",         "-h", GetoptLong::NO_ARGUMENT],
   ["--tmpdir",       "-1", GetoptLong::REQUIRED_ARGUMENT],
   ["--raketask",     "-2", GetoptLong::REQUIRED_ARGUMENT],
@@ -35,7 +35,7 @@ opts.each do |opt, arg|
   when '--tableformat'
     ENV['tableformat'] = arg
   when '--parallel'
-    ENV['exec_mode'] = 'parallel'
+    ENV['parallels'] = arg
   when '--tmpdir'
     ENV['tmpdir'] = arg
   when '--raketask'
