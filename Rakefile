@@ -178,7 +178,7 @@ namespace :spec do
   tasks = []
   gen_exec_plan(nil, scenarios, [], ssh_options, tasks, platform)
 
-  task :stdout => [:test] do
+  task :stdout do
 
     if ENV['tableformat'] == 'bool'
 
@@ -245,13 +245,30 @@ namespace :spec do
     end
   end
 
-  if ENV['exec_mode'] == 'parallel'
-    multitask :test => tasks
+  exec_tasks = []
+  if ENV['parallels']
+    processes = ENV['parallels'].to_i
+
+    split_group = []
+    groups = 0
+    tasks.each_with_index do |t,pos|
+
+      split_group << t
+
+      if pos % processes == 0 || pos == tasks.length - 1
+        multitask "parallel_tasks_#{groups}".to_s => split_group
+        groups += 1
+        split_group = []
+      end
+    end
+
+    groups.times {|i| exec_tasks << "parallel_tasks_#{i}" }
   else
-    task :test => tasks
+    exec_tasks = tasks
   end
 
-  task :all => [:stdout]
+  exec_tasks << :stdout
+  task :all => exec_tasks
 
   # tempファイルに書き出し
   open(ENV['platforms_tmp'] ,"w") do |y|
