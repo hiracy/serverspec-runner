@@ -80,7 +80,7 @@ RSpec.configure do |c|
   c.after(:each) do
 
     if ENV['explain'] == 'long'
-      explains << spacer_char + example.metadata[:full_description] + (RSpec::Matchers.generated_description || '')
+      explains << spacer_char + example.metadata[:full_description]
       results << (self.example.exception ? 'NG' : 'OK')
       row_num << 1
     else
@@ -98,7 +98,7 @@ RSpec.configure do |c|
         end
       end
 
-      explains << spacer + spacer_char + (RSpec::Matchers.generated_description || '')
+      explains << spacer + spacer_char + (self.example.metadata[:description] || '')
       results << (self.example.exception ? 'NG' : 'OK')
       row_num << desc_hierarchy.length + 1
 
