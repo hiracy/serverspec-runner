@@ -17,8 +17,8 @@ opts = GetoptLong.new(
   ["--tableformat",  "-t", GetoptLong::REQUIRED_ARGUMENT],
   ["--parallel",     "-p", GetoptLong::REQUIRED_ARGUMENT],
   ["--help",         "-h", GetoptLong::NO_ARGUMENT],
-  ["--tmpdir",       "-1", GetoptLong::REQUIRED_ARGUMENT],
-  ["--raketask",     "-2", GetoptLong::REQUIRED_ARGUMENT],
+  ["--raketask",     "-1", GetoptLong::REQUIRED_ARGUMENT],
+  ["--tmpdir",       "-2", GetoptLong::REQUIRED_ARGUMENT],
   ["--tasks",        "-T", GetoptLong::NO_ARGUMENT]
 )
 
@@ -39,7 +39,7 @@ opts.each do |opt, arg|
   when '--tmpdir'
     ENV['tmpdir'] = arg
   when '--raketask'
-    raketask += "::" + arg
+    raketask = arg
   when '--tasks'
     showtasks = true
   else
@@ -51,6 +51,7 @@ opts.each do |opt, arg|
     puts "-t, --tableformat  (aa|mkd|csv|bool)    specify result table type(default: aa)"
     puts "-T, --tasks                             display the tasks with descriptions(exec rake -T)"
     puts "-p, --parallel                          execute tasks in parallel"
+    puts "-1, --raketask     RAKE_TASK_NAME       execute specified rake task only(ex: spec:test::anyhost-01)"
     puts "-h, --help                              show help"
     exit 0
   end
