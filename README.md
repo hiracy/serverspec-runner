@@ -24,21 +24,22 @@ Edit your [spec-files](http://serverspec.org/resource_types.html).
 Edit your infrastructure or middleware tests scenario to "scenario.yml".
 
 ```
-test_top_dir:          # test directory top
-    :                  # test hierarchy directories
-  test_bottom_dir:     # test directory bottom
-    - servername       # ssh-accessible ip address or fqdn. or alias
+test_top_dir:                # test directory top
+    :                        # test hierarchy directories
+  test_bottom_dir:           # test directory bottom
+    - servername             # ssh-accessible ip address or fqdn. or alias
     - :
   - :
 :
 ---
-servername:            # alias name(not required)
-  host: 192.168.0.11   # ssh-accessible ip address or fqdn(required if alias exist)
-  ssh_opts:            # ssh options(not required)
-    port: 22           # ssh port option(not required)
-    user: "anyone"     # ssh user option(not required)
-      :                # any other Net::SSH Options(not required)
-  any_attribute: "aaa" # host attributes. left example available to get "property[:servername][:any_attribute]" from code(not required)
+servername:                  # alias name(not required)
+  host: 192.168.0.11         # ssh-accessible ip address or fqdn(required if alias exist)
+  ssh_opts:                  # ssh options(not required)
+    port: 22                 # ssh port option(not required)
+    user: "anyone"           # ssh user option(not required)
+    keys: ["~/.ssh/id_rsa"]  # ssh private keys option(not required)
+      :                      # any other Net::SSH Options(not required)
+  any_attribute: "aaa"       # host attributes. left example available to get "property[:servername][:any_attribute]" from code(not required)
   :
 :
 ```
