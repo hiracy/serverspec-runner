@@ -39,7 +39,7 @@ servername:                  # alias name(not required)
     user: "anyone"           # ssh user option(not required)
     keys: ["~/.ssh/id_rsa"]  # ssh private keys option(not required)
       :                      # any other Net::SSH Options(not required)
-  any_attribute: "aaa"       # host attributes. left example available to get "property[:servername][:any_attribute]" from code(not required)
+  any_attribute: "aaa"       # host attributes. this example available to get "property[:any_attribute]" from your codes(not required)
   :
 :
 ```
