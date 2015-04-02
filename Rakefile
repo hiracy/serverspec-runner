@@ -6,6 +6,7 @@ require 'fileutils'
 require 'net/ssh'
 require 'open-uri'
 require 'serverspec-runner'
+require 'serverspec-runner/util/hash'
 
 desc "Run serverspec to all scenario"
 task :spec => 'spec:all'
@@ -159,10 +160,7 @@ namespace :spec do
         scenarios = data
       else
         data.each do |k, v|
-          platform[k.to_sym] = {}
-          v.each do |kk, vv|
-            platform[k.to_sym][kk.to_sym] = vv
-          end
+          platform[k.to_sym] = v.deep_symbolize_keys
         end
       end
     end
