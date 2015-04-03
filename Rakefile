@@ -113,9 +113,16 @@ namespace :spec do
         RSpec::Core::RakeTask.new("#{task_path}::#{host_alias}".to_sym) do |t|
 
           fpath = task_path.gsub(/::/, '/')
-          t.pattern = %W[
-            #{ENV['specpath']}/#{fpath}/*.rb
-          ]
+
+          if Dir.exists?("#{ENV['specpath']}/#{fpath}")
+            t.pattern = %W[
+              #{ENV['specpath']}/#{fpath}/*.rb
+            ]
+          elsif File.file?("#{ENV['specpath']}/#{fpath}.rb")
+            t.pattern = %W[
+              #{ENV['specpath']}/#{fpath}.rb
+            ]
+          end
 
           raise "\e[31mspec file not found!![#{t.pattern.to_s}]\e[m" if Dir.glob(t.pattern).empty?
           t.fail_on_error = false
