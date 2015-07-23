@@ -1,6 +1,7 @@
 require 'serverspec'
 require 'pathname'
 require 'net/ssh'
+require 'net/ssh/proxy/command'
 require 'yaml'
 require 'csv'
 require 'serverspec-runner/util/hash'
@@ -56,6 +57,7 @@ RSpec.configure do |c|
     options = Net::SSH::Config.for(c.host, files=["~/.ssh/config"])
     ssh_opts ||= ssh_opts_default
     property[:ssh_opts].each { |k, v| ssh_opts[k.to_sym] = v } if property[:ssh_opts]
+    ssh_opts[:proxy] = Kernel.eval(ssh_opts[:proxy]) if ssh_opts[:proxy]
     user    = options[:user] || ssh_opts[:user] || Etc.getlogin
     options.merge!(ssh_opts)
     set :ssh_options, options
