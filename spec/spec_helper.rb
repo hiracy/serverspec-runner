@@ -62,6 +62,7 @@ RSpec.configure do |c|
     options.merge!(ssh_opts)
     set :ssh_options, options
     set :backend, :ssh
+    set :request_pty, true
   else
     set :backend, :exec
   end
