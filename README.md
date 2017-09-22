@@ -1,7 +1,7 @@
 serverspec-runner [![Gem Version](https://badge.fury.io/rb/serverspec-runner.svg)](http://badge.fury.io/rb/serverspec-runner)  [![BuildStatus](https://secure.travis-ci.org/hiracy/serverspec-runner.png)](http://travis-ci.org/hiracy/serverspec-runner)
 ======================
 
-Simple execution framework for [serverspec](http://serverspec.org/).
+Simple execution framework for [serverspec](http://serverspec.org/) run.
 
 ----
 
