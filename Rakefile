@@ -7,6 +7,7 @@ require 'net/ssh'
 require 'open-uri'
 require 'serverspec-runner'
 require 'serverspec-runner/util/hash'
+require 'serverspec-runner/ansible/inventory'
 
 desc "Run serverspec to all scenario"
 task :spec => 'spec:all'
@@ -128,6 +129,9 @@ namespace :spec do
           t.fail_on_error = false
           ENV['TARGET_HOST'] = host_alias
           ENV['TARGET_SSH_HOST'] = platform[host_alias.to_sym][:host] || host_alias
+          if platform[host_alias.to_sym].key?(:ssh_opts) && platform[host_alias.to_sym][:ssh_opts].key?(:port)
+            ENV['TARGET_CONNECTION'] = 'ssh'
+          end
         end
       end
 
@@ -161,7 +165,7 @@ namespace :spec do
     ENV['scenario'] = ENV['scenario_tmp']
   end
 
-  if !File.file?(ENV['scenario']) || !File.file?("#{ENV['specroot']}/scenario.yml")
+  if !File.file?(ENV['scenario']) && !File.file?("#{ENV['specroot']}/scenario.yml")
     print "\e[31m"
     puts "scenario.yml is not found.(--help option can display manual))"
     print "\e[m"
@@ -173,16 +177,29 @@ namespace :spec do
       if idx == 0
         scenarios = data
       else
-        data.each do |k, v|
-          platform[k.to_sym] = v.deep_symbolize_keys
+        if data != nil
+          data.each do |k, v|
+            platform[k.to_sym] = v.deep_symbolize_keys
+          end
         end
       end
     end
   end
 
+  if ENV['inventory']
+    if !File.file?(ENV['inventory'])
+      print "\e[31m"
+      puts "inventory file is not found.(--help option can display manual))"
+      print "\e[m"
+      exit 1
+    end
+
+    platform = Inventory.inventory_to_platform(YAML.load_file(ENV['inventory']))
+  end
+
   if !scenarios
     print "\e[31m"
-    puts "scenario.yml is empty."
+    puts "scenario is empty."
     print "\e[m"
     exit 1
   end

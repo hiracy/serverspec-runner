@@ -11,6 +11,7 @@ showtasks = false
 
 opts = GetoptLong.new(
   ["--scenario",     "-s", GetoptLong::REQUIRED_ARGUMENT],
+  ["--inventory",    "-i", GetoptLong::REQUIRED_ARGUMENT],
   ["--specroot",     "-r", GetoptLong::REQUIRED_ARGUMENT],
   ["--ssh_options",  "-o", GetoptLong::REQUIRED_ARGUMENT],
   ["--explain",      "-e", GetoptLong::REQUIRED_ARGUMENT],
@@ -26,6 +27,8 @@ opts.each do |opt, arg|
   case opt
   when '--scenario'
     ENV['scenario'] = arg
+  when '--inventory'
+    ENV['inventory'] = arg
   when '--specroot'
     ENV['specroot'] = arg
   when '--ssh_options'
@@ -45,6 +48,7 @@ opts.each do |opt, arg|
   else
     puts "Usage: serverspec-runner (options)"
     puts "-s, --scenario     SCENARIO_FILE        path to scenario yml file"
+    puts "-i, --inventory    INVENTORY_FILE       path to ansible inventory yml file"
     puts "-r, --specroot     SPEC_ROOT            path to spec tests root dir"
     puts "-o, --ssh_options  SSH_OPTIONS_FILE     path to ssh options yml file"
     puts "-e, --explain      (short|long)         specify result explain length(default: short)"
