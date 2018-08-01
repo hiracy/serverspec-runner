@@ -21,7 +21,7 @@ Edit your [spec-files](http://serverspec.org/resource_types.html).
 
     $ vim  /path/to/your_serverspec_root/test_top_dir/.../your_serverspec_test.rb
 
-Edit your infrastructure or middleware tests scenario to "scenario.yml".
+Edit your infrastructure or middleware tests scenario to "[scenario.yml](scenario.yml)".
 
 ```
 test_top_dir:                # test directory top
