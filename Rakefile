@@ -161,6 +161,13 @@ namespace :spec do
     ENV['scenario'] = ENV['scenario_tmp']
   end
 
+  if !File.file?(ENV['scenario']) || !File.file?("#{ENV['specroot']}/scenario.yml")
+    print "\e[31m"
+    puts "scenario.yml is not found.(--help option can display manual))"
+    print "\e[m"
+    exit 1
+  end
+
   File.open(ENV['scenario'] || "#{ENV['specroot']}/scenario.yml") do |f|
     YAML.load_documents(f).each_with_index do |data, idx|
       if idx == 0
