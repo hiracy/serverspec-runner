@@ -52,7 +52,7 @@ RSpec.configure do |c|
 
   set_property (YAML.load_file(ENV['platforms_tmp']))[ENV['TARGET_HOST'].to_sym]
 
-  if ENV['TARGET_SSH_HOST'] !~ /localhost|127\.0\.0\.1/
+  if ENV['TARGET_CONNECTION'] == 'ssh' || ENV['TARGET_SSH_HOST'] !~ /localhost|127\.0\.0\.1/
     c.host = ENV['TARGET_SSH_HOST']
     options = Net::SSH::Config.for(c.host, files=["~/.ssh/config"])
     ssh_opts ||= ssh_opts_default
