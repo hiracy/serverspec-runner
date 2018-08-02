@@ -35,7 +35,8 @@ namespace :spec do
   CSV.open(csv_file, 'w') { |w| w << ['description', 'result'] }
   ENV['explain'] = ENV['explain'] || "short"
   ENV['tableformat'] = ENV['tableformat'] || "aa"
-  ENV['scenario'] = ENV['scenario'] || "./scenario.yml"
+  ENV['scenario'] = File.expand_path(ENV['scenario'] || "./scenario.yml")
+  ENV['inventory'] = File.expand_path(ENV['inventory']) if ENV['inventory']
 
   def init_specpath(path)
 
