@@ -117,7 +117,7 @@ namespace :spec do
 
           if Dir.exists?("#{ENV['specpath']}/#{fpath}")
             t.pattern = %W[
-              #{ENV['specpath']}/#{fpath}/*.rb
+              #{ENV['specpath']}/#{fpath}/**/*.rb
             ]
           elsif File.file?("#{ENV['specpath']}/#{fpath}.rb")
             t.pattern = %W[
