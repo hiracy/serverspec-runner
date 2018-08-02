@@ -52,17 +52,17 @@ opts.each do |opt, arg|
     exit 0
   else
     puts "Usage: serverspec-runner (options)"
-    puts "-s, --scenario     SCENARIO_FILE        path to scenario yml file"
-    puts "-i, --inventory    INVENTORY_FILE       path to ansible inventory yml file"
-    puts "-r, --specroot     SPEC_ROOT            path to spec tests root dir"
-    puts "-o, --ssh_options  SSH_OPTIONS_FILE     path to ssh options yml file"
-    puts "-e, --explain      (short|long)         specify result explain length(default: short)"
-    puts "-t, --tableformat  (aa|mkd|csv|bool)    specify result table type(default: aa)"
-    puts "-T, --tasks                             display the tasks with descriptions(exec rake -T)"
-    puts "-p, --parallel                          execute tasks in parallel"
-    puts "-1, --raketask     RAKE_TASK_NAME       execute specified rake task only(ex: spec:test::anyhost-01)"
-    puts "-v, --version                           show version"
-    puts "-h, --help                              show help"
+    puts "-s, --scenario     SCENARIO_FILE          path to scenario yml file"
+    puts "-i, --inventory    INVENTORY_FILE         path to ansible inventory yml file"
+    puts "-r, --specroot     SPEC_ROOT              path to spec tests root dir"
+    puts "-o, --ssh_options  SSH_OPTIONS_FILE       path to ssh options yml file"
+    puts "-e, --explain      (short|long)           specify result explain length(default: short)"
+    puts "-t, --tableformat  (aa|mkd|csv|bool|none) specify result table type(default: aa)"
+    puts "-T, --tasks                               display the tasks with descriptions(exec rake -T)"
+    puts "-p, --parallel                            execute tasks in parallel"
+    puts "-1, --raketask     RAKE_TASK_NAME         execute specified rake task only(ex: spec:test::anyhost-01)"
+    puts "-v, --version                             show version"
+    puts "-h, --help                                show help"
     exit 0
   end
 end
