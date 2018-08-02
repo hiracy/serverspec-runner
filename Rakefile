@@ -208,8 +208,8 @@ namespace :spec do
   gen_exec_plan(nil, scenarios, [], ssh_options, tasks, platform)
 
   task :stdout do
-
-    if ENV['tableformat'] == 'bool'
+    if ENV['tableformat'] == 'none'
+    elsif ENV['tableformat'] == 'bool'
 
       ret = 'ok'
       CSV.foreach(csv_file) do |r|

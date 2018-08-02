@@ -5,6 +5,7 @@ $LOAD_PATH.unshift File.join(File.dirname(__FILE__), *%w[.. lib])
 require 'rubygems'
 require 'rake'
 require 'getoptlong'
+require 'serverspec-runner/version'
 
 raketask =  'spec'
 showtasks = false
@@ -17,6 +18,7 @@ opts = GetoptLong.new(
   ["--explain",      "-e", GetoptLong::REQUIRED_ARGUMENT],
   ["--tableformat",  "-t", GetoptLong::REQUIRED_ARGUMENT],
   ["--parallel",     "-p", GetoptLong::REQUIRED_ARGUMENT],
+  ["--version",      "-v", GetoptLong::NO_ARGUMENT],
   ["--help",         "-h", GetoptLong::NO_ARGUMENT],
   ["--raketask",     "-1", GetoptLong::REQUIRED_ARGUMENT],
   ["--tmpdir",       "-2", GetoptLong::REQUIRED_ARGUMENT],
@@ -45,18 +47,22 @@ opts.each do |opt, arg|
     raketask = arg
   when '--tasks'
     showtasks = true
+  when '--version'
+    puts ServerspecRunner::VERSION
+    exit 0
   else
     puts "Usage: serverspec-runner (options)"
-    puts "-s, --scenario     SCENARIO_FILE        path to scenario yml file"
-    puts "-i, --inventory    INVENTORY_FILE       path to ansible inventory yml file"
-    puts "-r, --specroot     SPEC_ROOT            path to spec tests root dir"
-    puts "-o, --ssh_options  SSH_OPTIONS_FILE     path to ssh options yml file"
-    puts "-e, --explain      (short|long)         specify result explain length(default: short)"
-    puts "-t, --tableformat  (aa|mkd|csv|bool)    specify result table type(default: aa)"
-    puts "-T, --tasks                             display the tasks with descriptions(exec rake -T)"
-    puts "-p, --parallel                          execute tasks in parallel"
-    puts "-1, --raketask     RAKE_TASK_NAME       execute specified rake task only(ex: spec:test::anyhost-01)"
-    puts "-h, --help                              show help"
+    puts "-s, --scenario     SCENARIO_FILE          path to scenario yml file"
+    puts "-i, --inventory    INVENTORY_FILE         path to ansible inventory yml file"
+    puts "-r, --specroot     SPEC_ROOT              path to spec tests root dir"
+    puts "-o, --ssh_options  SSH_OPTIONS_FILE       path to ssh options yml file"
+    puts "-e, --explain      (short|long)           specify result explain length(default: short)"
+    puts "-t, --tableformat  (aa|mkd|csv|bool|none) specify result table type(default: aa)"
+    puts "-T, --tasks                               display the tasks with descriptions(exec rake -T)"
+    puts "-p, --parallel                            execute tasks in parallel"
+    puts "-1, --raketask     RAKE_TASK_NAME         execute specified rake task only(ex: spec:test::anyhost-01)"
+    puts "-v, --version                             show version"
+    puts "-h, --help                                show help"
     exit 0
   end
 end
