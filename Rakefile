@@ -119,9 +119,7 @@ namespace :spec do
           fpath = task_path.gsub(/::/, '/')
 
           if Dir.exists?("#{ENV['specpath']}/#{fpath}")
-            t.pattern = %W[
-              #{ENV['specpath']}/#{fpath}/#{spec_file_pattern}
-            ]
+            t.pattern = "#{ENV['specpath']}/#{fpath}/#{spec_file_pattern}"
 
             if spec_file_exclude_pattern
               t.exclude_pattern = "#{ENV['specpath']}/#{fpath}/#{spec_file_exclude_pattern}"
