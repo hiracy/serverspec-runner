@@ -11,18 +11,20 @@ raketask =  'spec'
 showtasks = false
 
 opts = GetoptLong.new(
-  ["--scenario",     "-s", GetoptLong::REQUIRED_ARGUMENT],
-  ["--inventory",    "-i", GetoptLong::REQUIRED_ARGUMENT],
-  ["--specroot",     "-r", GetoptLong::REQUIRED_ARGUMENT],
-  ["--ssh_options",  "-o", GetoptLong::REQUIRED_ARGUMENT],
-  ["--explain",      "-e", GetoptLong::REQUIRED_ARGUMENT],
-  ["--tableformat",  "-t", GetoptLong::REQUIRED_ARGUMENT],
-  ["--parallel",     "-p", GetoptLong::REQUIRED_ARGUMENT],
-  ["--version",      "-v", GetoptLong::NO_ARGUMENT],
-  ["--help",         "-h", GetoptLong::NO_ARGUMENT],
-  ["--raketask",     "-1", GetoptLong::REQUIRED_ARGUMENT],
-  ["--tmpdir",       "-2", GetoptLong::REQUIRED_ARGUMENT],
-  ["--tasks",        "-T", GetoptLong::NO_ARGUMENT]
+  ["--scenario",        "-s", GetoptLong::REQUIRED_ARGUMENT],
+  ["--inventory",       "-i", GetoptLong::REQUIRED_ARGUMENT],
+  ["--specroot",        "-r", GetoptLong::REQUIRED_ARGUMENT],
+  ["--ssh_options",     "-o", GetoptLong::REQUIRED_ARGUMENT],
+  ["--explain",         "-e", GetoptLong::REQUIRED_ARGUMENT],
+  ["--tableformat",     "-t", GetoptLong::REQUIRED_ARGUMENT],
+  ["--parallel",        "-p", GetoptLong::REQUIRED_ARGUMENT],
+  ["--pattern",         "-P", GetoptLong::REQUIRED_ARGUMENT],
+  ["--exclude-pattern", "-E", GetoptLong::REQUIRED_ARGUMENT],
+  ["--version",         "-v", GetoptLong::NO_ARGUMENT],
+  ["--help",            "-h", GetoptLong::NO_ARGUMENT],
+  ["--raketask",        "-1", GetoptLong::REQUIRED_ARGUMENT],
+  ["--tmpdir",          "-2", GetoptLong::REQUIRED_ARGUMENT],
+  ["--tasks",           "-T", GetoptLong::NO_ARGUMENT]
 )
 
 opts.each do |opt, arg|
@@ -41,6 +43,10 @@ opts.each do |opt, arg|
     ENV['tableformat'] = arg
   when '--parallel'
     ENV['parallels'] = arg
+  when '--pattern'
+    ENV['pattern'] = arg
+  when '--exclude-pattern'
+    ENV['exclude_pattern'] = arg
   when '--tmpdir'
     ENV['tmpdir'] = arg
   when '--raketask'
@@ -60,6 +66,7 @@ opts.each do |opt, arg|
     puts "-t, --tableformat  (aa|mkd|csv|bool|none) specify result table type(default: aa)"
     puts "-T, --tasks                               display the tasks with descriptions(exec rake -T)"
     puts "-p, --parallel                            execute tasks in parallel"
+    puts "-P, --pattern                             execute pattern in spec directory"
     puts "-1, --raketask     RAKE_TASK_NAME         execute specified rake task only(ex: spec:test::anyhost-01)"
     puts "-v, --version                             show version"
     puts "-h, --help                                show help"

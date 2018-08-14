@@ -93,6 +93,8 @@ namespace :spec do
   end
 
   def exec_tasks(parent, node, real_path, platform)
+    spec_file_pattern = ENV['pattern'] || "**/*.rb"
+    spec_file_exclude_pattern = ENV['exclude_pattern']
 
     if parent == nil
       abs_node = node
@@ -118,8 +120,12 @@ namespace :spec do
 
           if Dir.exists?("#{ENV['specpath']}/#{fpath}")
             t.pattern = %W[
-              #{ENV['specpath']}/#{fpath}/**/*.rb
+              #{ENV['specpath']}/#{fpath}/#{spec_file_pattern}
             ]
+
+            if spec_file_exclude_pattern
+              t.exclude_pattern = "#{ENV['specpath']}/#{fpath}/#{spec_file_exclude_pattern}"
+            end
           elsif File.file?("#{ENV['specpath']}/#{fpath}.rb")
             t.pattern = %W[
               #{ENV['specpath']}/#{fpath}.rb
