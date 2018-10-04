@@ -213,6 +213,8 @@ namespace :spec do
   gen_exec_plan(nil, scenarios, [], ssh_options, tasks, platform)
 
   task :stdout do
+    ENV['is_example_error'] = 'true' if CSV.foreach(csv_file).any? { |c| c.size > 1 && c[1] == 'NG' }
+
     if ENV['tableformat'] == 'none'
     elsif ENV['tableformat'] == 'bool'
 
@@ -279,6 +281,10 @@ namespace :spec do
     end
   end
 
+  task :exit do
+    exit(1) if !ENV['ignore_error_exit'] && ENV['is_example_error']
+  end
+
   exec_tasks = []
   if ENV['parallels']
     processes = ENV['parallels'].to_i
@@ -302,6 +308,7 @@ namespace :spec do
   end
 
   exec_tasks << :stdout
+  exec_tasks << :exit
   task :all => exec_tasks
 
   # tempファイルに書き出し
