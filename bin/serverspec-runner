@@ -21,6 +21,7 @@ opts = GetoptLong.new(
   ["--pattern",           "-P", GetoptLong::REQUIRED_ARGUMENT],
   ["--exclude-pattern",   "-E", GetoptLong::REQUIRED_ARGUMENT],
   ["--ignore-error-exit", "-I", GetoptLong::NO_ARGUMENT],
+  ["--activate-specroot", "-a", GetoptLong::NO_ARGUMENT],
   ["--version",           "-v", GetoptLong::NO_ARGUMENT],
   ["--help",              "-h", GetoptLong::NO_ARGUMENT],
   ["--raketask",          "-1", GetoptLong::REQUIRED_ARGUMENT],
@@ -50,6 +51,8 @@ opts.each do |opt, arg|
     ENV['exclude_pattern'] = arg
   when '--ignore-error-exit'
     ENV['ignore_error_exit'] = 'true'
+  when '--activate-specroot'
+    ENV['activate_specroot'] = 'true'
   when '--tmpdir'
     ENV['tmpdir'] = arg
   when '--raketask'
@@ -71,6 +74,7 @@ opts.each do |opt, arg|
     puts "-p, --parallel                                 execute tasks in parallel"
     puts "-P, --pattern                                  execute pattern in spec directory"
     puts "-I, --ignore-error-exit                        exit with 0 even on error"
+    puts "-a, --activate-specroot                        activate existed spec root only(--specroot is required)"
     puts "-1, --raketask          RAKE_TASK_NAME         execute specified rake task only(ex: spec:test::anyhost-01)"
     puts "-v, --version                                  show version"
     puts "-h, --help                                     show help"
