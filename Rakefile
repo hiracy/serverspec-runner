@@ -38,16 +38,18 @@ namespace :spec do
   ENV['scenario'] = File.expand_path(ENV['scenario'] || "./scenario.yml")
   ENV['inventory'] = File.expand_path(ENV['inventory']) if ENV['inventory']
 
-  def init_specpath(path)
+  def init_specpath(path, only_activate)
 
     abs_path = File::expand_path(path)
 
-    begin
-      print "want to create spec-tree to #{abs_path}? (y/n): "
-      ans = STDIN.gets.strip
-      exit 0 unless (ans == 'y' || ans == 'yes')
-    rescue Exception
-      exit 0
+    unless only_activate
+      begin
+        print "want to create spec-tree to #{abs_path}? (y/n): "
+        ans = STDIN.gets.strip
+        exit 0 unless (ans == 'y' || ans == 'yes')
+      rescue Exception
+        exit 0
+      end
     end
 
     FileUtils.mkdir_p("#{path}/lib")
@@ -145,7 +147,10 @@ namespace :spec do
   end
 
   if !Dir.exists?(ENV['specpath'])
-    init_specpath(ENV['specroot'])
+    init_specpath(ENV['specroot'], false)
+    exit 0
+  elsif ENV['activate_specroot']
+    init_specpath(ENV['specroot'], true)
     exit 0
   end
 

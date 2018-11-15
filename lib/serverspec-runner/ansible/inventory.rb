@@ -7,7 +7,11 @@ module Inventory
         if gk == 'hosts'
           if gv.kind_of?(Hash)
             gv.each do |hk, hv|
-              platform[hk] = convert_ssh_opt(v['vars']).merge(convert_ssh_opt(hv))
+              platform[hk.to_sym] = unless hv.nil?
+                               convert_ssh_opt(v['vars']).merge(convert_ssh_opt(hv))
+                             else
+                               convert_ssh_opt(v['vars'])
+                             end
             end
           elsif gv.kind_of?(Array)
             gv.each do |h|
