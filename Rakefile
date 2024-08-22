@@ -24,11 +24,11 @@ namespace :spec do
     end
   end
 
-  Dir.chdir(ENV['specroot']) if Dir.exists?(ENV['specroot'])
+  Dir.chdir(ENV['specroot']) if Dir.exist?(ENV['specroot'])
 
   ENV['specpath'] = "#{ENV['specroot']}/spec"
   ENV['ssh_options'] = ENV['ssh_options'] || "#{ENV['specroot']}/ssh_options_default.yml" || "#{File.dirname(__FILE__)}/ssh_options_default.yml"
-  ENV['ssh_options'] = "#{File.dirname(__FILE__)}/ssh_options_default.yml" unless File.exists?(ENV['ssh_options'])
+  ENV['ssh_options'] = "#{File.dirname(__FILE__)}/ssh_options_default.yml" unless File.exist?(ENV['ssh_options'])
   ssh_options = YAML.load_file(ENV['ssh_options'])
   ENV['result_csv'] = ENV['result_csv'] || './_serverspec_result.csv'
   csv_file = ENV['result_csv']
@@ -120,7 +120,7 @@ namespace :spec do
 
           fpath = task_path.gsub(/::/, '/')
 
-          if Dir.exists?("#{ENV['specpath']}/#{fpath}")
+          if Dir.exist?("#{ENV['specpath']}/#{fpath}")
             t.pattern = "#{ENV['specpath']}/#{fpath}/#{spec_file_pattern}"
 
             if spec_file_exclude_pattern
@@ -146,7 +146,7 @@ namespace :spec do
     end
   end
 
-  if !Dir.exists?(ENV['specpath'])
+  if !Dir.exist?(ENV['specpath'])
     init_specpath(ENV['specroot'], false)
     exit 0
   elsif ENV['activate_specroot']
